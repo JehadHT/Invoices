@@ -58,6 +58,8 @@ Route::get('unPaid_invoices', [InvoicesController::class, 'unPaid_invoices']);
 
 Route::get('Partially_invoices', [InvoicesController::class, 'Partially_invoices']);
 
+Route::get('export_invoices', [InvoicesController::class, 'export'])->name('export_invoices');
+
 require __DIR__.'/auth.php';
 
 Route::get('/{page}', [AdminController::class, 'index'])->middleware(['auth', 'verified']);

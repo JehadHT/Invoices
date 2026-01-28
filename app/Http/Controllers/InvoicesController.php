@@ -14,7 +14,8 @@ use App\Models\section;
 use App\Models\User;
 use App\Notifications\AddInvoice;
 use Illuminate\Support\Facades\Notification;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\InvoicesExport;
 
 class InvoicesController extends Controller
 {
@@ -252,5 +253,10 @@ class InvoicesController extends Controller
         $details = invoices_details::where('id_Invoice', $id)->get();
         $section = section::where('id', $invoice->section_id)->first();
         return view('invoices.print_invoice', compact('invoice', 'section','details'));
+    }
+
+    public function export() 
+    {
+        return Excel::download(new InvoicesExport, 'users.xlsx');
     }
 }
