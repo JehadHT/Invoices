@@ -65,7 +65,7 @@
                             <label for="inputName" class="control-label">القسم</label>
                             <select name="Section" id="Section" class="form-control select2" onclick="console.log($(this).val())"
                                 onchange="console.log('change is firing')">
-                                <option value="" {{ ($section_id ?? '') == '' ? 'selected disabled' : '' }}>حدد القسم</option>
+                                <option value="" {{ ($section_id ?? '') == '' ? 'selected' : '' }} disabled>حدد القسم</option>
                                 @foreach ($sections as $section)
                                     <option value="{{ $section->id }}" {{ ($section_id ?? '') == $section->id ? 'selected' : '' }}> {{ $section->section_name }}</option>
                                 @endforeach
@@ -75,13 +75,11 @@
                         <div class="col-lg-3 mg-t-20 mg-lg-t-0">
                             <label for="inputName" class="control-label">المنتج</label>
                             <select id="product" name="product" class="form-control select2" >
+                                <option value="" {{ ($product ?? '') == '' ? 'selected' : '' }} disabled>اختر منتج</option>
                                 @if(isset($sectionProducts) && $sectionProducts->isNotEmpty())
-                                    <option value="">اختر منتج</option>
                                     @foreach ($sectionProducts as $productName)
-                                        <option value="{{ $productName }}" {{ ($product ?? '') == $productName ? 'selected' : '' }}>{{ $productName }}</option>
+                                        <option value="{{ $productName }}" {{ ($product ?? '') == $productName ? 'selected' : '' }} >{{ $productName }}</option>
                                     @endforeach
-                                @else
-                                    <option value="">اختر منتج</option>
                                 @endif
                             </select>
                         </div>
@@ -245,7 +243,7 @@
                     success: function(data) {
                         var $productSelect = $('select[name="product"]');
                         $productSelect.empty();
-                        $productSelect.append('<option value="">اختر منتج</option>');
+                        $productSelect.append('<option value="" disabled selected>اختر منتج</option>');
                         if (Array.isArray(data)) {
                             $.each(data, function(index, value) {
                                 $productSelect.append('<option value="' + value + '">' + value + '</option>');
@@ -261,7 +259,7 @@
                     }
                 });
             } else {
-                $('select[name="product"]').empty().append('<option value="">اختر منتج</option>');
+                $('select[name="product"]').empty().append('<option value="" disabled selected>اختر منتج</option>');
             }
         });
     });

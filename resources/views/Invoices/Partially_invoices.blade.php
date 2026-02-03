@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    الفواتير المدفوعة جزئيا
+    الفواتير 
 @endsection
 @section('css')
     <!-- Internal Data table css -->
@@ -36,7 +36,7 @@
             }
         </script>
     @endif
-    
+
     @if (session()->has('Archive_invoice'))
         <script>
             window.onload = function() {
@@ -77,12 +77,14 @@
     @endif
     <div class="card mg-b-20">
         <div class="card-header pb-0">
-            <div class="d-flex justify-content-between">
-                <a href="invoices/create" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
-                        class="fas fa-plus"></i>&nbsp; اضافة فاتورة</a>
-                {{-- <h4 class="card-title mg-b-0">الفواتير</h4>
-									<i class="mdi mdi-dots-horizontal text-gray"></i> --}}
-            </div>
+            @can('اضافة فاتورة')
+            <a href="invoices/create" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
+                    class="fas fa-plus"></i>&nbsp; اضافة فاتورة</a>
+            @endcan
+            @can('تصدير EXCEL')
+            <a class="modal-effect btn btn-sm btn-primary" href="{{ url('export_invoices') }}"
+                        style="color:white"><i class="fas fa-file-download"></i>&nbsp;تصدير اكسيل</a>
+            @endcan
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -137,24 +139,38 @@
                                             <h6 class="dropdown-header tx-uppercase tx-11 tx-bold tx-inverse tx-spacing-1">
                                                 Dropdown header</h6>
                                             {{-- تعديل الفاتورة --}}
+                                            @can('تعديل الفاتورة')
                                             <a class="dropdown-item"
                                                 href="{{ url('edit_invoices') }}/{{ $inv->id }}"><i
                                                     class="text-primary fas fa-edit"></i>&nbsp;&nbsp;تعديل الفاتورة</a>
+                                            @endcan
                                             {{-- حذف الفاتورة --}}
+                                            @can('حذف الفاتورة')
                                             <a class="dropdown-item" href="#" data-invoice_id="{{ $inv->id }}"
                                                 data-type="delete" data-toggle="modal" data-target="#delete_invoice"><i
                                                     class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف
                                                 الفاتورة</a>
+                                            @endcan
                                             {{-- تغيير حالة الدفع --}}
+                                            @can('تغير حالة الدفع')
                                             <a class="dropdown-item"
                                                 href="{{ url('change_Status') }}/{{ $inv->id }}"><i
                                                     class=" text-success fas fa-money-bill"></i>&nbsp;&nbsp;تغيير حالة
                                                 الدفع</a>
+                                            @endcan
                                             {{-- أرشفة الفاتورة --}}
+                                            @can('ارشفة الفاتورة')
                                             <a class="dropdown-item" href="#" data-invoice_id="{{ $inv->id }}"
                                                 data-type="archive" data-toggle="modal" data-target="#Archive_invoice"><i
                                                     class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;أرشفة
                                                 الفاتورة</a>
+                                            @endcan
+                                            {{-- طباعة فاتورة --}}
+                                            @can('طباعةالفاتورة')
+                                            <a class="dropdown-item"
+                                                href="{{ url('print_invoice') }}/{{ $inv->id }}"><i
+                                                    class=" text-success fas fa-money-bill"></i>&nbsp;&nbsp;طباعة فاتورة</a>
+                                            @endcan
                                         </div>
                                     </div>
 

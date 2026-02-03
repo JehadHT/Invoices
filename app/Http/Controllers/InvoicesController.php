@@ -16,7 +16,7 @@ use App\Notifications\AddInvoice;
 use Illuminate\Support\Facades\Notification;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\InvoicesExport;
-
+use App\Notifications\Add_Invoice_DB;
 class InvoicesController extends Controller
 {
     /**
@@ -94,10 +94,13 @@ class InvoicesController extends Controller
         }
 
 
-        $user = User::first();
-        Notification::send($user, new AddInvoice($invoice_id));
+        $adminuser = User::whereJsonContains('roles_name', 'admin')->get();
 
         $user = User::get();
+        Notification::send($user, new AddInvoice($invoice_id));
+
+        Notification::send($adminuser, new Add_Invoice_DB($invoice_id));
+        // $user = User::get();
         $invoices = invoices::latest()->first();
         // Notification::send($user, new \App\Notifications\Add_invoice_new($invoices));
 
@@ -189,7 +192,7 @@ class InvoicesController extends Controller
 
     public function getproducts($id)
     {
-        $products = DB::table("products")->where("section_id", $id)->pluck("Product_name", "id");
+        $products = DB::table("products")->where("section_id", $id)->pluck("product_name", "id");
         return json_encode($products);
     }
 
@@ -259,4 +262,5 @@ class InvoicesController extends Controller
     {
         return Excel::download(new InvoicesExport, 'users.xlsx');
     }
+
 }
