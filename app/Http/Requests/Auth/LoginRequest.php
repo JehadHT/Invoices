@@ -49,6 +49,16 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        // Check if user is active
+        if (!Auth::user()->isActive()) {
+            Auth::logout();
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => 'حسابك غير مفعل، يرجى التواصل مع الإدارة',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

@@ -17,20 +17,20 @@ class AutoCheckPermission
     {
         $routeName = $request->route()->getName();
 
-        // $permissions = [
-        //     'roles.index' => 'عرض صلاحية',
-        //     'roles.create' => 'اضافة صلاحية',
-        //     'roles.store' => 'اضافة صلاحية',
-        //     'roles.show' => 'عرض صلاحية',
-        //     'roles.edit' => 'تعديل صلاحية',
-        //     'roles.update' => 'تعديل صلاحية',
-        //     'roles.destroy' => 'حذف صلاحية',
-        //     // أضف المزيد حسب الحاجة
-        // ];
+        $permissions = [
+            'roles.index' => 'عرض صلاحية',
+            'roles.create' => 'اضافة صلاحية',
+            'roles.store' => 'اضافة صلاحية',
+            'roles.show' => 'عرض صلاحية',
+            'roles.edit' => 'تعديل صلاحية',
+            'roles.update' => 'تعديل صلاحية',
+            'roles.destroy' => 'حذف صلاحية',
+            // أضف المزيد حسب الحاجة
+        ];
 
-        // if (isset($permissions[$routeName]) && !$request->user() || !$request->user()->can($permissions[$routeName])) {
-        //     abort(403, 'Unauthorized action.');
-        // }
+        if (isset($permissions[$routeName]) && !$request->user() || !$request->user()->can($permissions[$routeName])) {
+            abort(403, 'Unauthorized action.');
+        }
 
         return $next($request);
     }

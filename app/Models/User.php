@@ -50,4 +50,14 @@ class User extends Authenticatable
             'roles_name' => 'array',
         ];
     }
+
+    /**
+     * Check if the user is active.
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->Status === 'مفعل';
+    }
 }
